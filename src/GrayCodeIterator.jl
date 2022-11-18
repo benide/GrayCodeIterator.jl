@@ -12,8 +12,6 @@ end
 GrayCode(n::Int, k::Int) = GrayCode(n, k, n, k, Int[], 0)
 
 function GrayCode(n::Int, k::Int, prefix::Vector{Int})
-    length(prefix) <= n || error("Prefix is too long (n = $n and length(prefix) = $(length(prefix)))")
-    count(prefix .!= 0) <= k || error("Weight of prefix is too high (k = $k and wt = $(count(prefix .!= 0)))")
     GrayCode(n, k,
              n - length(prefix),
              k - count(prefix .!= 0),
@@ -24,11 +22,17 @@ end
 Base.IteratorEltype(::GrayCode) = Base.HasEltype()
 Base.eltype(::GrayCode) = Array{Int, 1}
 Base.IteratorSize(::GrayCode) = Base.HasLength()
-Base.length(G::GrayCode) = factorial(big(G.ns)) ÷ (factorial(big(G.ks)) * factorial(big(G.ns - G.ks)))
+function Base.length(G::GrayCode)
+    if 0 <= G.ks <= G.ns
+        factorial(big(G.ns)) ÷ (factorial(big(G.ks)) * factorial(big(G.ns - G.ks)))
+    else
+        0
+    end
+end
 Base.in(v::Vector{Int}, G::GrayCode) = length(v) == G.n && count(v .!= 0) == G.k && view(v, 1:G.prefix_length) == G.prefix
 
-function Base.iterate(G::GrayCode)
-    @assert 0 <= G.ks <= G.ns "Length and weight of Gray code are not compatible"
+@inline function Base.iterate(G::GrayCode)
+    0 <= G.ks <= G.ns || return nothing
 
     g = [i <= G.ks ? 1 : 0 for i = 1:G.ns+1]
     τ = collect(2:G.ns+2)
