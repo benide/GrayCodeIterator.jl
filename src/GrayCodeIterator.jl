@@ -7,16 +7,18 @@ struct GrayCode
     ks::Int # k for the subcode
     prefix::Vector{Int}
     prefix_length::Int
+    mutate::Bool
 end
 
-GrayCode(n::Int, k::Int) = GrayCode(n, k, n, k, Int[], 0)
+GrayCode(n::Int, k::Int; mutate = false) = GrayCode(n, k, Int[], mutate = false)
 
-function GrayCode(n::Int, k::Int, prefix::Vector{Int})
+function GrayCode(n::Int, k::Int, prefix::Vector{Int}; mutate = false)
     GrayCode(n, k,
              n - length(prefix),
              k - count(prefix .!= 0),
              prefix,
-             length(prefix))
+             length(prefix),
+             mutate)
 end
 
 Base.IteratorEltype(::GrayCode) = Base.HasEltype()
@@ -47,7 +49,11 @@ Base.in(v::Vector{Int}, G::GrayCode) = length(v) == G.n && count(v .!= 0) == G.k
 
     v = [G.prefix; g[end-1:-1:1]]
 
-    return (v, (g,τ,t,v))
+    return if G.mutate
+        (v, (g,τ,t,v))
+    else
+        (copy(v), (g,τ,t,v))
+    end
 end
 
 @inline function Base.iterate(G::GrayCode, state)
@@ -106,7 +112,11 @@ end
         end
     end
 
-    return (v, (g,τ,t,v))
+    return if G.mutate
+        (v, (g,τ,t,v))
+    else
+        (copy(v), (g,τ,t,v))
+    end
 end
 
 export GrayCode
