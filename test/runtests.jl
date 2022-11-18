@@ -26,15 +26,15 @@ using Test
     # check a particular case, but order doesn't matter
     # NOTE: this one requires the iterator to NOT mutate (the default)
     V_check = collect(GrayCode(5,2))
-    V_correct = [[0, 0, 0, 1, 1]
-                 [0, 0, 1, 1, 0]
-                 [0, 0, 1, 0, 1]
-                 [0, 1, 1, 0, 0]
-                 [0, 1, 0, 1, 0]
-                 [0, 1, 0, 0, 1]
-                 [1, 1, 0, 0, 0]
-                 [1, 0, 1, 0, 0]
-                 [1, 0, 0, 1, 0]
+    V_correct = [[0, 0, 0, 1, 1],
+                 [0, 0, 1, 1, 0],
+                 [0, 0, 1, 0, 1],
+                 [0, 1, 1, 0, 0],
+                 [0, 1, 0, 1, 0],
+                 [0, 1, 0, 0, 1],
+                 [1, 1, 0, 0, 0],
+                 [1, 0, 1, 0, 0],
+                 [1, 0, 0, 1, 0],
                  [1, 0, 0, 0, 1]]
     @test length(V_check) == length(intersect(V_check, V_correct)) == 10
 
