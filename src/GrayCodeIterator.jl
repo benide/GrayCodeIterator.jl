@@ -12,8 +12,8 @@ end
 GrayCode(n::Int, k::Int) = GrayCode(n, k, n, k, Int[], 0)
 
 function GrayCode(n::Int, k::Int, prefix::Vector{Int})
-    length(prefix) < n || error("Prefix is too long")
-    count(prefix .!= 0) < k || error("Weight of prefix is too high")
+    length(prefix) < n || error("Prefix is too long (n = $n and length(prefix) = $(length(prefix)))")
+    count(prefix .!= 0) < k || error("Weight of prefix is too high (k = $k and wt = $(count(prefix .!= 0)))")
     GrayCode(n, k,
              n - length(prefix),
              k - count(prefix .!= 0),
