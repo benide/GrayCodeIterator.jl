@@ -30,5 +30,13 @@ using Test
 
     # make sure eltype is correct
     @test eltype(GrayCode(5,2)) == typeof(first(GrayCode(5,2)))
+
+    # check length and weight edge cases when there should only be one element returned
+    @test collect(GrayCode(5,5)) == [[1,1,1,1,1]]
+    @test collect(GrayCode(5,4,[0])) == [[0,1,1,1,1]]
+    @test collect(GrayCode(5,0)) == [[0,0,0,0,0]]
+    @test collect(GrayCode(5,1,[1])) == [[1,0,0,0,0]]
+    @test collect(GrayCode(0,0)) == [Int[]]
+    @test collect(GrayCode(3,2,[1,0,1])) == [[1,0,1]]
 end
 
