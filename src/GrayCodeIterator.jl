@@ -10,7 +10,7 @@ struct GrayCode
     mutate::Bool
 end
 
-GrayCode(n::Int, k::Int; mutate = false) = GrayCode(n, k, Int[], mutate = false)
+GrayCode(n::Int, k::Int; mutate = false) = GrayCode(n, k, Int[], mutate = mutate)
 
 function GrayCode(n::Int, k::Int, prefix::Vector{Int}; mutate = false)
     GrayCode(n, k,
@@ -49,11 +49,7 @@ Base.in(v::Vector{Int}, G::GrayCode) = length(v) == G.n && count(v .!= 0) == G.k
 
     v = [G.prefix; g[end-1:-1:1]]
 
-    return if G.mutate
-        (v, (g,τ,t,v))
-    else
-        (copy(v), (g,τ,t,v))
-    end
+    ((G.mutate ? v : copy(v);), (g,τ,t,v))
 end
 
 @inline function Base.iterate(G::GrayCode, state)
@@ -112,11 +108,7 @@ end
         end
     end
 
-    return if G.mutate
-        (v, (g,τ,t,v))
-    else
-        (copy(v), (g,τ,t,v))
-    end
+    ((G.mutate ? v : copy(v);), (g,τ,t,v))
 end
 
 export GrayCode
