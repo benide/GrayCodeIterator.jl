@@ -1,5 +1,8 @@
 # GrayCodeIterator.jl
 
+[![Build Status](https://github.com/benide/GrayCodeIterator.jl/actions/workflows/Test.yml/badge.svg?branch=master)](https://github.com/benide/GrayCodeIterator.jl/actions/workflows/Test.yml?query=branch%3Amaster)
+[![Coverage](https://codecov.io/gh/benide/GrayCodeIterator.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/benide/GrayCodeIterator.jl)
+
 GrayCodeIterator.jl provides an iterator for all binary vectors of length $n$ and weight $k$, optionally with a supplied prefix.
 
 ```julia-repl
